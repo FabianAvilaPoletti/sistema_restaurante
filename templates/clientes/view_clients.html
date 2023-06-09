@@ -1,0 +1,53 @@
+{% extends 'components/layout.html' %}
+
+{% block content %}
+
+<head>
+  <link rel="stylesheet" href="/static/css/tables.css">
+</head>
+
+<div class="container">
+  <h1 class="title">Clientes</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Fecha de Registro</th>
+        <th scope="col">Preferencias</th>
+        <th scope="col">Condiciones Especiales</th>
+        <th scope="col">Acciones</th> <!-- Nueva columna -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for cliente in clients %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ cliente[0] }}</td>
+        <td>{{ cliente[1] }}</td>
+        <td>{{ cliente[2] }}</td>
+        <td>{{ cliente[3] }}</td>
+        <td>{{ cliente[4] }}</td>
+        <td>{{ cliente[5] }}</td>
+        <td>
+          <a href="{{ url_for('DeleteClient', id=cliente[6]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+            <!-- Agrega la ruta adecuada para eliminar el cliente -->
+            <button class="btn btn-delete">Eliminar</button>
+          </a>
+          <a href="{{ url_for('UpdateClient', id=cliente[6]) }}"> <!-- Agrega la ruta adecuada para editar el cliente -->
+            <button class="btn btn-edit">Modificar</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ url_for('AddClient') }}">
+    <button class="btn btn-primary">Agregar Cliente</button>
+  </a>
+
+</div>
+{% endblock %}
