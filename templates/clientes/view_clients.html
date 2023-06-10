@@ -1,0 +1,64 @@
+{% extends 'components/layout.html' %}
+{% block content %}
+
+  <head>
+    <link rel="stylesheet" href="/static/css/tables.css">
+    <link rel="stylesheet" href="/static/css/flash_messages-tables.css">
+  </head>
+
+  <div class="container">
+    <h1 class="title">Clientes</h1> 
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      <div class="flash-message {% if message.startswith('Error') %}error{% else %}success{% endif %}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Telefono</th>
+          <th scope="col">Fecha de Registro</th>
+          <th scope="col">Preferencias</th>
+          <th scope="col">Condiciones Especiales</th>
+          <th scope="col">Acciones</th> <!-- Nueva columna -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in clients %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ cliente[0] }}</td>
+          <td>{{ cliente[1] }}</td>
+          <td>{{ cliente[2] }}</td>
+          <td>{{ cliente[3] }}</td>
+          <td>{{ cliente[4] }}</td>
+          <td>{{ cliente[5] }}</td>
+          <td>
+            <a href="{{ url_for('DeleteClient', id=cliente[6]) }}"
+              onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+              <button class="btn btn-delete"><i class="fas fa-trash-alt"></i></button>
+            </a>
+            <a href="{{ url_for('UpdateClient', id=cliente[6]) }}">
+              <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('AddClient') }}">
+      <button class="btn btn-primary">Agregar Cliente</button>
+    </a>
+  </div>
+{% endblock %}
